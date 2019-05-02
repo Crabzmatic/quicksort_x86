@@ -16,7 +16,7 @@ int main(){
     int* integers = (int*) malloc(n * sizeof(int));
     if (integers == NULL){
     	printf("Array allocation failed.\n");
-	    return ERROR;
+	return ERROR;
     }
     for (int i = 0; i < n; ++i) {
         int int_res = scanf("%d", &integers[i]);
