@@ -47,11 +47,8 @@ quickSort:
     #set eax to n
     mov 12(%ebp), %eax
 
-    #set ecx to 4 (int size)
-    mov $4, %ecx
-
-    #multiply ecx and eax to get end offset
-    mul %ecx
+    #multiply eax with 4 (2^2) (int size) to get end offset
+    sal $2, %eax
 
     #set the end offset to ecx
     mov %eax, %ecx
@@ -98,28 +95,28 @@ quickSortRecursive:
     sub $4, %ecx
 
     #eax = j = low
-    
+
    loop:
 
      #j < high
      cmp %ebx, %eax
      jge endLoop
-     
+
      #jump to loop start if integers[j] > pivot
      cmp %edi, (%esi, %eax)
      jg incrj
 
      add $4, %ecx
-     
+
      #swap integers[i], integers[j]
      mov (%esi, %eax), %edx
      xchg %edx, (%esi, %ecx)
-     mov %edx, (%esi, %eax)     
+     mov %edx, (%esi, %eax)
 
    incrj:
      #j++
      add $4, %eax
-   jmp loop     
+   jmp loop
 
    endLoop:
 
@@ -129,25 +126,30 @@ quickSortRecursive:
     #swap integers[i + 1], integers[high]
     mov (%esi, %ecx), %edx
     xchg %edx, (%esi, %ebx)
-    mov %edx, (%esi, %ecx) 
-     
+    mov %edx, (%esi, %ecx)
+
     #ecx = i
-    sub $4, %ecx 
+    sub $4, %ecx
 
     #eax = low
     pop %eax
     mov %ecx, %ebx
 
+    push %ecx
+
     #quickSort(integers, low index, i)
     call quickSortRecursive
+
+    pop %ecx
 
     #from i to i+2; pivot was i + 1
     add $8, %ecx
 
     mov %ecx, %eax
     #ebx = high
+
     pop %ebx
-    
+
     #quickSort(integers, i+2, high index)
     call quickSortRecursive
 
